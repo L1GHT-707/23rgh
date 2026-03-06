@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  font-family: 'Fredoka One', cursive;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:white;
+  text-align:center;
+  position:relative;
+}
+
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(15px);
+  padding:50px;
+  border-radius:25px;
+  max-width:600px;
+  width:90%;
+  border:3px solid transparent;
+  box-shadow:0 0 25px #ff4f81,0 0 50px #fffacd;
+  z-index:2;
+  animation:floatCard 3s ease-in-out infinite alternate, glow 2s ease-in-out infinite alternate;
+  position:relative;
+}
+
+.card::before{ content:"🎂"; position:absolute; top:-15px; left:-15px; font-size:1.5em; }
+.card::after{ content:"🎂"; position:absolute; top:-15px; right:-15px; font-size:1.5em; }
+
+@keyframes floatCard{ 0%{transform:translateY(0);} 100%{transform:translateY(-10px);} }
+@keyframes glow{ 0%{box-shadow:0 0 20px #ff4f81,0 0 40px #fffacd;} 100%{box-shadow:0 0 35px #ff4f81,0 0 70px #fffacd;} }
+
+h1{ font-size:3em; color:#fffacd; text-shadow:3px 3px 15px #ff4f81; font-family: 'Fredoka One', cursive; }
+button{ padding:15px 35px; border:none; border-radius:30px; font-size:18px; cursor:pointer; background:white; color:#ff4f81; margin-top:20px; font-family: 'Fredoka One', cursive; }
+button:hover{ transform:scale(1.1); background:#ffb6c1; color:white; }
+input{ padding:12px; border-radius:15px; border:none; margin-top:15px; font-size:16px; width:80%; text-align:center; outline:none; font-family: 'Fredoka One', cursive; }
+
+/* PHASE 1 LAYOUT */
+.phase1-container{ position:relative; display:flex; justify-content:center; align-items:center; width:100%; }
+.phase1-left-container{ position:absolute; left:60px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; align-items:center; }
+.phase1-right-container{ position:absolute; right:60px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; align-items:center; }
+img{ max-width:250px; border-radius:15px; margin-top:8px; }
+
+/* PHASE 2 GALLERY */
+.slider{ position:relative; height:450px; display:flex; justify-content:center; align-items:center; gap:15px; }
+#galleryImage{ max-width:400px; border-radius:15px; margin-top:20px; transition: all 1s ease-in-out; }
+
+/* GIFS */
+.side-gif{ position:absolute; top:50%; transform:translateY(-50%); z-index:1; }
+#leftGif{left:50px;width:550px;display:none;}
+#rightGif{right:50px;width:300px;display:none;}
+#lilyGif{left:50px;width:300px;display:none;}
+#kinderGif{right:50px;width:300px;display:none;}
+#jawlineGif{left:50px;width:300px;display:none;}
+#donutGif{right:50px;width:300px;display:none;}
+#tulipsGif{left:50px;width:300px;display:none;}
+#monkeyGif{right:50px;width:300px;display:none;}
+#stitchGif{left:50px;width:300px;display:none;}
+#tangledGif{right:50px;width:300px;display:none;}
+#shortGif{left:50px;width:300px;display:none;}
+#movieGif{right:50px;width:400px;display:none;}
+
+.slide-left{ animation:slideLeft 1s forwards; }
+@keyframes slideLeft{ 0%{transform:translateX(100%);opacity:0;} 100%{transform:translateX(0);opacity:1;} }
+.fade-in{ animation:fadeIn 1s forwards; }
+@keyframes fadeIn{ 0%{opacity:0;} 100%{opacity:1;} }
+
+.caption{ margin-top:18px; font-size:22px; color:#fffacd; text-shadow:2px 2px 10px #ff4f81; }
+.above-caption{ margin-bottom:12px; font-size:26px; color:#fffacd; text-shadow:2px 2px 10px #ff4f81; }
+
+/* PHASE 3 */
+.phase3-boxes{ display:grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; width:100%; height:100vh; gap:20px; padding:20px; box-sizing:border-box; }
+.phase3-box{ background:rgba(255,255,255,0.2); border-radius:15px; width:100%; height:100%; cursor:pointer; user-select:none; color:transparent; font-weight:bold; font-size:18px; display:flex; align-items:center; justify-content:center; transition: all 0.3s ease; font-family: 'Fredoka One', cursive; padding: 15px; overflow-y: auto; text-align: center; }
+.phase3-box.revealed{ background:rgba(255,255,255,0.3); user-select: auto; }
+#phase3.card { width: 100vw !important; max-width: 100vw !important; margin: 0 auto; left: 0; right: 0; }
+
+/* PHASE 4 Style - TOTAL TAKEOVER */
+#phase4.card {
+  position: absolute;
+  top: 0; left: 0;
+  display: none; 
+  padding: 40px; 
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0;
+  z-index: 9999;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+.music-btn, .reset-btn { 
+  background: #ff4f81; 
+  color: white; 
+  border: 8px solid white; 
+  padding: 30px 60px; 
+  font-size: 35px; 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  margin: 10px;
+}
+
+#lonelyImgInCard {
+  max-width: 200px; 
+  border: 6px solid white;
+  border-radius: 20px;
+}
+
+/* MEMORY GAME CSS - ULTIMATE SCALE */
+#game-container {
+  display: none;
+  width: 98%;
+  max-width: 1400px;
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.game-instruction {
+  color:#fffacd; 
+  margin-bottom: 20px; 
+  font-size: 3em; 
+  text-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.memory-card {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex; justify-content: center; align-items: center;
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.memory-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: none;
+}
+.memory-card.flipped img { display: block; }
+.memory-card.flipped { background: white; transform: rotateY(180deg); transition: 0.4s; }
+.memory-card.matched { border-color: #fffacd; box-shadow: 0 0 40px #fffacd; border-width: 8px; }
+
+#toPhase5 {
+  font-size: 40px;
+  padding: 25px 70px;
+  border: 8px solid #ff4f81;
+  margin-top: 30px;
+  background: #fffacd;
+  color: #ff4f81;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phase1-container" id="phase1">
+  <div class="phase1-left-container">
+    <img src="avlina.jpg"><img src="plotting.gif">
+  </div>
+  <div class="card">
+    <h1>HAPPY BIRTHDAY TO THE PRETTIEST GIRL IN THE WORLD</h1>
+    <p><strong>PASSWORD: MS. AVLINA EVANTHIKAS BIRTHDATE (DD/MM/YY)</strong></p>
+    <input type="text" id="passwordInput">
+    <br>
+    <button onclick="checkPassword()">Unlock 🎁</button>
+    <p id="wrong" style="color:#ffcccc;"></p>
+  </div>
+  <div class="phase1-right-container">
+    <img src="avlina2.jpg"><img src="age.gif">
+  </div>
+</div>
+
+<div class="card" id="phase2" style="display:none">
+  <div class="slider">
+    <div>
+      <p id="aboveText" class="above-caption">LITTLE ANGEL</p>
+      <img id="galleryImage" src="">
+      <p id="imageText" class="caption"></p>
+    </div>
+  </div>
+  <button id="galleryNext" onclick="nextImage()">NEXT ❤️</button>
+  <div id="plushiePassword" style="display:none; margin-top:20px;">
+    <p><strong>WHO IS AVLINA'S FAVORITE PLUSHIE?</strong></p>
+    <input type="text" id="plushieInput" placeholder="Type your answer">
+    <br>
+    <button onclick="checkPlushie()">Confirm ✅</button>
+    <p id="plushieWrong" style="color:#ffcccc;"></p>
+  </div>
+</div>
+
+<img src="border.gif" id="leftGif" class="side-gif">
+<img src="aussie.gif" id="rightGif" class="side-gif">
+<img src="lily.gif" id="lilyGif" class="side-gif">
+<img src="kinder.gif" id="kinderGif" class="side-gif">
+<img src="jawline.gif" id="jawlineGif" class="side-gif">
+<img src="donut.gif" id="donutGif" class="side-gif">
+<img src="tulips.gif" id="tulipsGif" class="side-gif">
+<img src="monkey.gif" id="monkeyGif" class="side-gif">
+<img src="stitch.gif" id="stitchGif" class="side-gif">
+<img src="tangled.gif" id="tangledGif" class="side-gif">
+<img src="short.gif" id="shortGif" class="side-gif">
+<img src="movie.gif" id="movieGif" class="side-gif">
+
+<div class="card" id="phase3" style="display:none; padding:0; border-radius:0; height:100vh;">
+  <div class="phase3-boxes">
+    <div class="phase3-box" style="grid-area: 1 / 1;" onclick="revealBox(this)"></div>
+    <div class="phase3-box" style="grid-area: 1 / 2;" onclick="revealBox(this)"></div>
+    <div class="phase3-box" style="grid-area: 1 / 3;" onclick="revealBox(this)"></div>
+    <div class="phase3-box" style="grid-area: 2 / 1;" onclick="revealBox(this)"></div>
+    <div class="phase3-box" style="grid-area: 2 / 2;" onclick="revealBox(this)"></div>
+    <div class="phase3-box" style="grid-area: 2 / 3;" onclick="revealBox(this)"></div>
+  </div>
+</div>
+
+<div class="card" id="phase4">
+  <div style="display:flex; align-items:center; gap:30px;">
+    <img src="lonely.jpg" alt="Lonely" id="lonelyImgInCard">
+    <button id="musicToggleBtn" class="music-btn" onclick="toggleMusic()">Play Song 🎵</button>
+    <button id="resetGameBtn" class="reset-btn" onclick="setupMemoryGame()" style="display:none;">Shuffle 🔀</button>
+  </div>
+
+  <div id="game-container" style="display:none;">
+    <p class="game-instruction">Match all the pairs to unlock the end!</p>
+    <div class="memory-grid" id="memoryGrid"></div>
+  </div>
+
+  <button id="toPhase5" style="display:none;" onclick="alert('Proceeding to Phase 5...')">PROCEED ✨</button>
+
+  <audio id="birthdaySong">
+    <source src="https://res.cloudinary.com/dgfrhnnkm/video/upload/v1772814713/lonely_uhm42e.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+const song = document.getElementById('birthdaySong');
+const musicBtn = document.getElementById('musicToggleBtn');
+let musicStarted = false;
+
+function toggleMusic() {
+  if (song.paused) {
+    song.play();
+    musicBtn.innerText = "Pause Song ⏸️";
+    if(!musicStarted) {
+      musicStarted = true;
+      document.getElementById('game-container').style.display = 'flex';
+      document.getElementById('resetGameBtn').style.display = 'inline-block';
+      setupMemoryGame();
+    }
+  } else {
+    song.pause();
+    musicBtn.innerText = "Play Song 🎵";
+  }
+}
+
+document.addEventListener('click', () => { song.load(); }, { once: true });
+
+let images=["avlina3.jpg","avlina4.jpg","avlina5.jpg","avlina6.jpg","avlina7.jpg","avlina8.jpg"];
+let aboveCaptions=["LITTLE ANGEL","GROWN ANGEL","SIGMA","MONKEY","NONCHALANT TAMILIAN","DWARF"];
+let captions=["AN ANGEL WAS BORN","INTELLIGENCE REMAINED THE SAME","FLEXING HER JAWLINE OUT HERE","WOW DA WHAT A SMILE HEHEHE","TOO MUCH AURA","5'3 ASS THINKS SHES TALL"];
+let index = 0;
+
+function showFirstImage() {
+    document.getElementById("galleryImage").src = images[0];
+    document.getElementById("imageText").innerText = captions[0];
+    document.getElementById("aboveText").innerText = aboveCaptions[0];
+    document.getElementById("leftGif").style.display="block";
+    document.getElementById("rightGif").style.display="block";
+}
+
+function nextImage(){
+  index++; 
+  const gifIds=["leftGif","rightGif","lilyGif","kinderGif","jawlineGif","donutGif","tulipsGif","monkeyGif","stitchGif","tangledGif","shortGif","movieGif"];
+  gifIds.forEach(id => document.getElementById(id).style.display="none");
+
+  if(index < images.length){
+    const galleryImage=document.getElementById("galleryImage");
+    galleryImage.src=images[index];
+    document.getElementById("imageText").innerText = captions[index];
+    document.getElementById("aboveText").innerText = aboveCaptions[index];
+    galleryImage.className="";
+    if(index==1){ galleryImage.style.maxWidth="220px"; document.getElementById("lilyGif").style.display="block"; document.getElementById("kinderGif").style.display="block"; } 
+    else if(index==2){ document.getElementById("jawlineGif").style.display="block"; document.getElementById("donutGif").style.display="block"; }
+    else if(index==3){ galleryImage.style.maxWidth="200px"; document.getElementById("tulipsGif").style.display="block"; document.getElementById("monkeyGif").style.display="block"; } 
+    else if(index==4){ galleryImage.style.maxWidth="260px"; document.getElementById("stitchGif").style.display="block"; document.getElementById("tangledGif").style.display="block"; } 
+    else if(index==5){ galleryImage.style.maxWidth="200px"; document.getElementById("shortGif").style.display="block"; document.getElementById("movieGif").style.display="block"; document.getElementById("galleryNext").style.display="none"; document.getElementById("plushiePassword").style.display="block"; }
+    if(index<=2){ galleryImage.classList.add("slide-left"); } else { galleryImage.classList.add("fade-in"); }
+  }
+}
+
+function checkPassword() { if (document.getElementById("passwordInput").value === "13/3/2008") { document.getElementById("phase1").style.display = "none"; document.getElementById("phase2").style.display = "block"; showFirstImage(); } else { document.getElementById("wrong").innerText = "Incorrect password! Try again ❤️"; } }
+function checkPlushie(){ if(document.getElementById("plushieInput").value.trim().toLowerCase() === "chimmy"){ document.getElementById("phase2").style.display = "none"; document.getElementById("phase3").style.display = "block"; } else { document.getElementById("plushieWrong").innerText = "Incorrect! Try again ❤️"; } }
+
+function revealBox(box){
+  if(box.classList.contains("revealed") && box.style.gridArea !== "2 / 2") return;
+  box.classList.add("revealed");
+  if(box.style.gridArea === "1 / 1"){ box.innerText = "Many many happy returns of the day to you maccha. May god bless you with all your wishes. Also im still elder to you, so don't forget to give me that respect okayyy hehehe. HAVE AN AMAZING DAY AND HAVE LOADS OF FUN BUDDY."; box.style.color = "#4B0082"; } 
+  else if(box.style.gridArea === "1 / 2"){ box.innerText = "Your parents were blessed with a beautiful angel on this day, THEY ARE SO LUCKY TO HAVE U IN THIS WORLD WITH THEM. Honestly i see why your family is always so happy and cheerful. Its because they have YOU. You literally bring them their happiness, i always see that they are filled with joy and they both also work really hard to make sure u live an amazing life. Keep putting smiles on the faces of your family maccha. You are doing a great job."; box.style.color = "#006400"; }
+  else if(box.style.gridArea === "1 / 3"){ box.innerText = "You know how lucky your friends are to have you in their life. Honestly tho, the way u support and motivate others is brilliant. Maybe you do know something about psychology huh. Its good to see these traits early on in life, because in the future when you do start working as a psychologist or a child therapist, these skills will help. So yea, your friends and the people u interact with are so so lucky to have you there as a model. No need to thank me for teaching u psychology okay, I'm just cool like that."; box.style.color = "#000000"; }
+  else if(box.style.gridArea === "2 / 1"){ box.innerText = "Ever since we both met again after like 7 years, im genuinely suprised you stayed the same height HAHAHAHA. Like srsly, how did u barely grow maccha. Either way, it feels really good to have a friend (ahem ahem) like you, obviously. Really really glad god brought us back together. Meeting ur family and hanging out with you, all those times i will never forget. I will cherish these memories with u. From playing cards, to you putting makeup on my face ( no other guy would let you do this dumbass ), its been so amazing. I couldnt ask for a better friend than you. During my atletics, you motivated me to win, and i actually felt pretty confident, as it was the first time a model motivated and pushed me forward. So yea, im really thankful to you maccha. UR AN AMAZING FRIEND. Your both beautiful from the outside and from the inside. KEEP UP THIS ENERGY, I LOVE IT SO MUCH. IM GRATEFUL FOR EVERYTHING BROSKI."; box.style.color = "#36454F"; }
+  else if(box.style.gridArea === "2 / 2"){ if(box.innerHTML.includes("dogInput")) return; box.innerHTML = `<div onclick="event.stopPropagation()"><p style="color:#228B22;">What is Avlina's favorite dog breed?</p><input type="text" id="dogInput" placeholder="Type answer here" onclick="event.stopPropagation()"><br><button onclick="event.stopPropagation(); checkDogBreed()">Confirm ✅</button><p id="dogWrong" style="color:#ffcccc;"></p></div>`; }
+  else if(box.style.gridArea === "2 / 3"){ box.innerText = "I really admire your strength bro. After your grandpa passed away ( may he rest in peace), you stayed really strong and comforted your family while also going through all this. It shows just how mentally strong you are maccha. When your psychology marks came out and you were pretty dissapointed, instead of giving up, you stood strong and decided to much better the next time. Absolutely fantastic. And talking about your physical strength, uhhhhh, you aint all that. I beat yo ass in arm wrestling so i never want to hear you say \"oh but im stronger than you\" none of that bullshit buddy hehehe. Anyways, keep supporting yourself, your friends, the people around and most importantly, yourself."; box.style.color = "#000080"; }
+}
+
+function checkDogBreed(){
+  if(document.getElementById("dogInput").value.trim().toLowerCase() === "australian shepherd"){
+    document.getElementById("phase3").style.display="none";
+    document.getElementById("phase4").style.display="flex";
+    triggerFinalCelebration();
+  } else { document.getElementById("dogWrong").innerText = "Incorrect! Try again ❤️"; }
+}
+
+function triggerFinalCelebration() {
+  const popSound = new Audio("https://www.soundjay.com/misc/sounds/party-horn-01.mp3");
+  popSound.volume = 0.5;
+  popSound.play();
+
+  var duration = 5 * 1000;
+  var animationEnd = Date.now() + duration;
+  var interval = setInterval(function() {
+    var timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) { return clearInterval(interval); }
+    confetti({ 
+      particleCount: 50, startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999, 
+      origin: { x: Math.random(), y: Math.random() - 0.2 } 
+    });
+  }, 250);
+}
+
+// MEMORY GAME LOGIC
+const memoryFiles = ['aussie2.gif', 'avlina9.jpg', 'milk.gif', 'grape.gif', 'chimmy.gif', 'avlina10.jpg', 'avlina11.jpg'];
+let memoryItems = [...memoryFiles, ...memoryFiles];
+let flipped = [];
+let matchedCount = 0;
+
+function setupMemoryGame() {
+  matchedCount = 0;
+  flipped = [];
+  document.getElementById('toPhase5').style.display = 'none';
+  const grid = document.getElementById('memoryGrid');
+  memoryItems.sort(() => 0.5 - Math.random());
+  grid.innerHTML = '';
+  memoryItems.forEach((file) => {
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.dataset.val = file;
+    card.innerHTML = `<img src="${file}">`;
+    card.onclick = () => flipCard(card);
+    grid.appendChild(card);
+  });
+}
+
+function flipCard(card) {
+  if(flipped.length < 2 && !card.classList.contains('flipped')) {
+    card.classList.add('flipped');
+    flipped.push(card);
+    if(flipped.length === 2) {
+      setTimeout(checkMatch, 800);
+    }
+  }
+}
+
+function checkMatch() {
+  if(flipped[0].dataset.val === flipped[1].dataset.val) {
+    flipped[0].classList.add('matched');
+    flipped[1].classList.add('matched');
+    matchedCount++;
+    if(matchedCount === 7) {
+      // Sound Effect Logic
+      const applaud = new Audio("https://www.soundjay.com/human/sounds/applause-01.mp3");
+      applaud.volume = 0.6;
+      applaud.play();
+      
+      document.getElementById('toPhase5').style.display = 'inline-block';
+      confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+    }
+  } else {
+    flipped[0].classList.remove('flipped');
+    flipped[1].classList.remove('flipped');
+  }
+  flipped = [];
+}
+</script>
+</body>
+</html>
